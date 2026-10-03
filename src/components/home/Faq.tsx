@@ -1,10 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import { faq } from "@/content/home";
+import type { Dictionary } from "@/content/dictionaries";
 import styles from "./Faq.module.css";
 
-export function Faq() {
+export function Faq({ t: faq }: { t: Dictionary["home"]["faq"] }) {
   const [open, setOpen] = useState<number | null>(null);
   const baseId = useId();
 

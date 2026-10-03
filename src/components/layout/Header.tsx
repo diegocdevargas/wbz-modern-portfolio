@@ -3,13 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { nav, contactNav, site } from "@/content/site";
+import { nav, contactHref, site } from "@/content/site";
+import type { Dictionary } from "@/content/dictionaries/format";
+import { localePath, type Locale } from "@/i18n/config";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { smoothScroll } from "./SmoothScroll";
 import styles from "./Header.module.css";
 
 const HIDE_AFTER = 80;
 
-export function Header() {
+type Props = { locale: Locale; t: Dictionary["header"] };
+
+export function Header({ locale, t }: Props) {
   const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const [atTop, setAtTop] = useState(true);
@@ -84,29 +89,36 @@ export function Header() {
   return (
     <header className={styles.header} data-state={state}>
       <div className={styles.row}>
-        <Link href="/" className={styles.logo} data-cursor-target aria-label={`${site.name}, página inicial`}>
+        <Link
+          href={localePath(locale, "/")}
+          className={styles.logo}
+          data-cursor-target
+          aria-label={`${site.name}, ${t.homeLabel}`}
+        >
           Webcraftz
         </Link>
 
-        <nav className={styles.nav} aria-label="Principal">
+        <nav className={styles.nav} aria-label={t.mainNav}>
           <ul>
             {nav.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={item.href}
+                  href={localePath(locale, item.href)}
                   className={styles.navLink}
                   data-cursor-target
-                  aria-current={pathname === item.href ? "page" : undefined}
+                  aria-current={pathname === localePath(locale, item.href) ? "page" : undefined}
                 >
-                  {item.label}
+                  {t.nav[item.key]}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        <Link href={contactNav.href} className={styles.contact} data-cursor-target>
-          <span>{contactNav.label}</span>
+        <div className={styles.actions}>
+        <LanguageSwitcher locale={locale} label={t.language} className={styles.lang} />
+        <Link href={localePath(locale, contactHref)} className={styles.contact} data-cursor-target>
+          <span>{t.contact}</span>
           <span className={styles.contactIcon} aria-hidden="true">
             <svg viewBox="0 0 4.906 9" width="5" height="9">
               <path
@@ -116,6 +128,7 @@ export function Header() {
             </svg>
           </span>
         </Link>
+        </div>
 
         <button
           ref={toggleRef}
@@ -123,7 +136,7 @@ export function Header() {
           className={styles.toggle}
           aria-expanded={open}
           aria-controls="mobile-drawer"
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          aria-label={open ? t.closeMenu : t.openMenu}
           onClick={() => setOpen((v) => !v)}
         >
           <span className={styles.bar} />
@@ -137,27 +150,28 @@ export function Header() {
         className={styles.drawer}
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={t.menu}
         hidden={!open}
       >
-        <nav aria-label="Menu móvel">
+        <nav aria-label={t.mobileNav}>
           <ul className={styles.drawerList}>
             {nav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className={styles.drawerLink} onClick={() => close(false)}>
-                  {item.label}
+                <Link href={localePath(locale, item.href)} className={styles.drawerLink} onClick={() => close(false)}>
+                  {t.nav[item.key]}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <Link href={contactNav.href} className={styles.drawerContact} onClick={() => close(false)}>
-          {contactNav.label}
+        <Link href={localePath(locale, contactHref)} className={styles.drawerContact} onClick={() => close(false)}>
+          {t.contact}
           <span aria-hidden="true">↗</span>
         </Link>
         <a className={styles.drawerMail} href={`mailto:${site.email}`}>
           {site.email}
         </a>
+        <LanguageSwitcher locale={locale} label={t.language} className={styles.drawerLang} />
       </div>
     </header>
   );

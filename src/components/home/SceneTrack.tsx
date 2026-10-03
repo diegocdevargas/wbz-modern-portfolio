@@ -1,4 +1,5 @@
-import { hero, journey, services, techMarks, values } from "@/content/home";
+import { serviceIcons, techMarks, valueLayout } from "@/content/home";
+import type { Dictionary } from "@/content/dictionaries";
 import { Icon } from "@/components/ui/Icon";
 import { Marquee } from "@/components/ui/Marquee";
 import { SceneStage } from "@/components/scene/SceneStage";
@@ -11,7 +12,8 @@ import styles from "./SceneTrack.module.css";
  * units), and the ids keep the live anchor names. `SceneChoreography` reads the
  * `data-*` hooks below to switch scene states and scrub the reveals.
  */
-export function SceneTrack() {
+export function SceneTrack({ t }: { t: Dictionary["home"] }) {
+  const { hero, values, services, journey } = t;
   return (
     <section id="landing-part-1" className={styles.track} aria-label="Webcraftz" data-scene-track>
       <div className={styles.stage} aria-hidden="true">
@@ -29,7 +31,7 @@ export function SceneTrack() {
             ))}
           </h1>
           <p className={styles.heroLead}>{hero.lead}</p>
-          <Marquee className={styles.techMarquee} label="Tecnologias" speed={40}>
+          <Marquee className={styles.techMarquee} label={hero.techLabel} speed={40}>
             {techMarks.map((name) => (
               <li key={name} className={styles.techItem}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -45,25 +47,28 @@ export function SceneTrack() {
         <div className={styles.delay} />
         <div className={styles.pin}>
           <ul className={styles.valueCards}>
-            {values.items.map((item, i) => (
+            {values.items.map((item, i) => {
+              const { icon, side } = valueLayout[i];
+              return (
               <li
                 key={item.title}
                 className={styles.valueCard}
-                data-side={item.side}
+                data-side={side}
                 data-index={i}
-                data-reveal={item.side === "left" ? "from-right" : "from-left"}
+                data-reveal={side === "left" ? "from-right" : "from-left"}
                 data-reveal-group="why"
               >
                 <span className={styles.connector} aria-hidden="true" />
                 <div className={styles.card} data-cursor-target>
                   <h3 className={styles.cardTitle}>
-                    <Icon name={item.icon} size={27} className={styles.cardIcon} />
+                    <Icon name={icon} size={27} className={styles.cardIcon} />
                     {item.title}
                   </h3>
                   <p className={styles.cardBody}>{item.body}</p>
                 </div>
               </li>
-            ))}
+              );
+            })}
           </ul>
           <div className={styles.valueHeading} data-reveal="rise-exit-up" data-reveal-group="why">
             <p className="eyebrow">{values.eyebrow}</p>
@@ -90,10 +95,10 @@ export function SceneTrack() {
             </h2>
           </div>
           <ul className={styles.servicesGrid} data-reveal="rise" data-reveal-group="features-content">
-            {services.items.map((item) => (
+            {services.items.map((item, i) => (
               <li key={item.title} className={styles.serviceCard} data-appear data-cursor-target>
                 <span className={styles.serviceIcon}>
-                  <Icon name={item.icon} size={24} />
+                  <Icon name={serviceIcons[i]} size={24} />
                 </span>
                 <div>
                   <h3 className={styles.cardTitle}>{item.title}</h3>

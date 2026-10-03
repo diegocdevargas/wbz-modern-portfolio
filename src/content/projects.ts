@@ -3,6 +3,10 @@
 // `needsReview` lists fields that look like template leftovers or need Diego's confirmation;
 // it is never rendered.
 
+import type { Locale } from "@/i18n/config";
+import { projectsEn } from "./projects.en";
+import { projectsEs } from "./projects.es";
+
 export type Category = "websites" | "ecommerce" | "web-apps" | "ai-automacao";
 
 export interface ImageAsset {
@@ -41,13 +45,18 @@ export interface Project {
   needsReview?: string[];
 }
 
-export const categories: { id: Category | "all"; label: string }[] = [
-  { id: "all", label: "All work" },
-  { id: "websites", label: "Websites" },
-  { id: "ecommerce", label: "E-commerce" },
-  { id: "web-apps", label: "Web Apps" },
-  { id: "ai-automacao", label: "AI & Automação" },
-];
+/** Text that changes per language. Portuguese lives in `data` below; see projects.en.ts / projects.es.ts. */
+export interface ProjectCopy {
+  subtitle: string;
+  discipline: string;
+  services: string[];
+  coverAlt: string;
+  challenge: string;
+  approach: string;
+  result: string;
+  metrics: Metric[];
+  galleryAlts: string[];
+}
 
 const data: Project[] = [
   {
@@ -386,16 +395,45 @@ const data: Project[] = [
   }
 ];
 
-export const projects: Project[] = [...data].sort((a, b) => a.order - b.order);
+const translations: Partial<Record<Locale, Record<string, ProjectCopy>>> = { en: projectsEn, es: projectsEs };
 
-export const featuredProjects = projects.filter((p) => p.featured);
+function localize(project: Project, locale: Locale): Project {
+  const copy = translations[locale]?.[project.slug];
+  if (!copy) return project;
+  return {
+    ...project,
+    subtitle: copy.subtitle,
+    discipline: copy.discipline,
+    services: copy.services,
+    cover: { ...project.cover, alt: copy.coverAlt },
+    challenge: copy.challenge,
+    approach: copy.approach,
+    result: copy.result,
+    metrics: copy.metrics,
+    gallery: project.gallery.map((img, i) => ({ ...img, alt: copy.galleryAlts[i] ?? img.alt })),
+  };
+}
 
-export function getProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+const sorted = [...data].sort((a, b) => a.order - b.order);
+
+/** All projects in `order`, with text in the requested language. */
+export function getProjects(locale: Locale): Project[] {
+  return sorted.map((p) => localize(p, locale));
+}
+
+export const projectSlugs = sorted.map((p) => p.slug);
+
+export function getFeaturedProjects(locale: Locale): Project[] {
+  return getProjects(locale).filter((p) => p.featured);
+}
+
+export function getProject(slug: string, locale: Locale): Project | undefined {
+  const p = sorted.find((x) => x.slug === slug);
+  return p && localize(p, locale);
 }
 
 /** Next project in `order`, wrapping around to the first. */
-export function getNextProject(slug: string): Project {
-  const i = projects.findIndex((p) => p.slug === slug);
-  return projects[(i + 1) % projects.length];
+export function getNextProject(slug: string, locale: Locale): Project {
+  const i = sorted.findIndex((p) => p.slug === slug);
+  return localize(sorted[(i + 1) % sorted.length], locale);
 }

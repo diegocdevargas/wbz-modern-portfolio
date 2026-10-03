@@ -1,5 +1,6 @@
 // Client feedback, edited separately from projects. Quotes are verbatim from the live site
-// (Workana reviews). Do not add endorsements that are not real.
+// (Workana reviews) and stay in their original Portuguese on every language version.
+// Do not add endorsements that are not real.
 
 export interface Testimonial {
   name: string;
@@ -33,5 +34,3 @@ export const testimonials: Testimonial[] = [
     needsReview: 'Typo "esclarecerecimentos" kept as on the live site until confirmed.',
   },
 ];
-
-export const testimonialsRating = "Nota 4,89/5 em mais de 200 projetos na Workana.";
