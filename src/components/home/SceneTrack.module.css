@@ -1,9 +1,9 @@
-/* Region heights in viewport heights, from the motion spec (desktop total ≈ 10.4 vh). */
+/*
+ * Sizes follow the live site measured at 1440×900, converted to viewport heights:
+ * a 48 px section padding, 50 vh "delay" spacers, 100 vh pinned content and 50 vh
+ * scroll triggers. The landing part totals ≈ 10.2 vh, as live.
+ */
 .track {
-  --hero-h: 100svh;
-  --value-h: 260svh;
-  --services-h: 440svh;
-  --journey-h: 240svh;
   position: relative;
   background: var(--bg);
 }
@@ -18,16 +18,21 @@
   pointer-events: none;
 }
 
-.sceneSlot {
-  position: absolute;
-  inset: 0;
+.section {
+  position: relative;
+  padding-block: 48px;
+}
+
+.delay,
+.trigger {
+  height: 50svh;
 }
 
 /* ---------- Hero ---------- */
 
 .hero {
   position: relative;
-  height: var(--hero-h);
+  height: 100svh;
   display: flex;
   align-items: center;
 }
@@ -106,11 +111,6 @@
 
 /* ---------- Value propositions ---------- */
 
-.valueRegion {
-  position: relative;
-  height: var(--value-h);
-}
-
 .pin {
   position: sticky;
   top: 0;
@@ -129,22 +129,22 @@
 }
 
 .valueCard[data-side="left"] {
-  left: calc(50% - 512px);
+  left: max(var(--gutter), calc(50% - 552px));
   flex-direction: row-reverse;
 }
 
 .valueCard[data-side="right"] {
-  right: calc(50% - 512px);
+  right: max(var(--gutter), calc(50% - 552px));
 }
 
 .valueCard[data-index="0"],
 .valueCard[data-index="2"] {
-  top: 40%;
+  top: 39.3%;
 }
 
 .valueCard[data-index="1"],
 .valueCard[data-index="3"] {
-  top: 55.5%;
+  top: 56.8%;
 }
 
 .connector {
@@ -176,11 +176,6 @@
 
 /* ---------- Services ---------- */
 
-.servicesRegion {
-  position: relative;
-  height: var(--services-h);
-}
-
 .servicesHeading {
   position: absolute;
   inset: 21% 0 auto 0;
@@ -194,18 +189,19 @@
 
 .servicesGrid {
   position: absolute;
-  top: 58%;
-  left: 50%;
+  top: 59.8%;
+  left: 0;
+  right: 0;
   display: grid;
-  grid-template-columns: repeat(3, 300px);
-  gap: 15px;
-  transform: translateX(-50%);
+  grid-template-columns: repeat(3, 268px);
+  gap: 47px;
+  justify-content: center;
+  align-items: start;
 }
 
 .serviceCard {
   display: flex;
   gap: 12px;
-  min-height: 104px;
   padding: 14px 16px 16px;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -225,17 +221,20 @@
 
 /* ---------- Journey ---------- */
 
-.journeyRegion {
+.journeySection {
   position: relative;
-  height: var(--journey-h);
-  padding-top: 40svh;
+  padding-block: 48px;
+}
+
+.journeyDelay {
+  height: 100svh;
 }
 
 .journey {
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding-left: clamp(var(--gutter), 11.67vw, 168px);
+  padding-left: max(var(--gutter), calc(50% - 552px));
 }
 
 .step {
@@ -274,20 +273,55 @@
   }
 
   .servicesGrid {
-    grid-template-columns: repeat(2, 300px);
+    grid-template-columns: repeat(2, 268px);
+    gap: 24px;
     top: 46%;
   }
 }
 
+/* Journey cards light up as their step reaches mid-screen (toggled by the choreography). */
+.stepCard {
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
+
+[data-choreo] .step:not([data-visible]) .stepCard {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+
+/*
+ * Phone: the live layout drops the scroll-target triggers. Content flows in one
+ * column after a half-screen pause, and each block fades up as it enters.
+ */
 @media (max-width: 809px) {
-  .track {
-    --value-h: 220svh;
-    --services-h: 360svh;
+  .section {
+    padding-block: 32px;
+  }
+
+  /* Only the leading pause remains; the trigger stretches between steps go away. */
+  .trigger,
+  .trigger ~ .delay {
+    display: none;
+  }
+
+  .pin {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
   }
 
   .hero {
     align-items: flex-start;
-    padding-top: 30svh;
+    padding-top: 29svh;
+  }
+
+  .heroCopy {
+    padding-inline: 26px;
   }
 
   .heroLead {
@@ -298,14 +332,19 @@
     width: 100%;
   }
 
-  /* Value cards stack in one centred column. */
+  .valueHeading,
+  .servicesHeading {
+    position: static;
+    order: -1;
+    padding-bottom: 48px;
+  }
+
   .valueCards {
+    position: static;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding-bottom: 120px;
+    gap: 7px;
   }
 
   .valueCard,
@@ -318,35 +357,37 @@
     display: none;
   }
 
-  .card {
-    width: min(280px, calc(100vw - 2 * var(--gutter)));
-  }
-
-  .valueHeading {
-    bottom: 4%;
-  }
-
-  .servicesHeading {
-    top: 10%;
-  }
-
   .servicesGrid {
-    top: 26%;
-    grid-template-columns: min(300px, calc(100vw - 2 * var(--gutter)));
-    gap: 8px;
+    position: static;
+    grid-template-columns: min(268px, calc(100vw - 2 * var(--gutter)));
+    gap: 46px;
   }
 
   .serviceCard {
-    min-height: 0;
     padding: 12px 14px;
   }
 
   .journey {
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
+    padding-inline: 15px;
   }
 
   .stepLine {
-    width: 22px;
+    width: 46px;
+  }
+}
+
+/* Reduced motion: shorter pauses so nobody scrolls through long empty stretches. */
+@media (prefers-reduced-motion: reduce) {
+  .delay,
+  .trigger {
+    height: 15svh;
+  }
+
+  .journeyDelay {
+    height: 30svh;
+  }
+
+  .stepCard {
+    transition: none;
   }
 }

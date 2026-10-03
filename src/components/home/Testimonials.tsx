@@ -7,7 +7,7 @@ import styles from "./Testimonials.module.css";
 export function Testimonials() {
   return (
     <section className={styles.section} aria-labelledby="testimonials-title">
-      <div className={styles.head}>
+      <div className={styles.head} data-fade="blur">
         <p className="eyebrow">{testimonialsRating}</p>
         <h2 id="testimonials-title" className={styles.title}>
           {testimonialsSection.title.text} <span className="accent">{testimonialsSection.title.accent}</span>

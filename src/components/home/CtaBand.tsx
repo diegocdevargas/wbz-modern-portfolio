@@ -8,7 +8,7 @@ export function CtaBand() {
     <section id="cta-section" className={styles.band} aria-labelledby="cta-title">
       <div className={styles.inner}>
         <p className={`label ${styles.eyebrow}`}>{cta.eyebrow}</p>
-        <h2 id="cta-title" className={styles.title}>
+        <h2 id="cta-title" className={styles.title} data-fade="blur">
           {cta.title.map((line) => (
             <span key={line}>{line} </span>
           ))}

@@ -10,7 +10,7 @@ export function Faq() {
 
   return (
     <section id="faq-section" className={styles.section} aria-labelledby={`${baseId}-title`}>
-      <div className={styles.head}>
+      <div className={styles.head} data-fade="blur">
         <p className="eyebrow">{faq.eyebrow}</p>
         <h2 id={`${baseId}-title`} className={styles.title}>
           {faq.title.text}
@@ -19,7 +19,7 @@ export function Faq() {
         </h2>
       </div>
 
-      <ul className={styles.list}>
+      <ul className={styles.list} data-fade="up">
         {faq.items.map((item, i) => {
           const isOpen = open === i;
           const btnId = `${baseId}-q${i}`;

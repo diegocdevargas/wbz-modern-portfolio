@@ -3,6 +3,8 @@ import { anton, inter, jetbrains, moon } from "./fonts";
 import { site } from "@/content/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { Reveal } from "@/components/ui/Reveal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,6 +39,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <SmoothScroll />
+        <Reveal />
       </body>
     </html>
   );

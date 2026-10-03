@@ -1,25 +1,27 @@
 import { hero, journey, services, techMarks, values } from "@/content/home";
 import { Icon } from "@/components/ui/Icon";
 import { Marquee } from "@/components/ui/Marquee";
+import { SceneStage } from "@/components/scene/SceneStage";
+import { SceneChoreography } from "./SceneChoreography";
 import styles from "./SceneTrack.module.css";
 
 /**
- * The early Home experience: one sticky stage (where the WebGL scene mounts in pass 2)
- * shared by four scroll regions. Region heights follow the motion spec (in viewport
- * heights) and keep the live site's anchor ids. Pass 1 shows every block in its fully
- * revealed state; the scroll choreography arrives in pass 3.
+ * The early Home experience: one sticky WebGL stage shared by four scroll regions.
+ * Region and trigger sizes follow the live site (measured at 1440×900, kept in viewport
+ * units), and the ids keep the live anchor names. `SceneChoreography` reads the
+ * `data-*` hooks below to switch scene states and scrub the reveals.
  */
 export function SceneTrack() {
   return (
-    <section className={styles.track} aria-label="Webcraftz">
+    <section id="landing-part-1" className={styles.track} aria-label="Webcraftz" data-scene-track>
       <div className={styles.stage} aria-hidden="true">
-        <div className={styles.sceneSlot} data-scene-slot />
+        <SceneStage />
       </div>
 
-      {/* 0 – 1 vh: hero copy over the scene */}
+      {/* Hero copy over the scene; it scrolls away normally. */}
       <div id="hero-section" className={styles.hero}>
         <div className={styles.heroCopy}>
-          <h1 className={styles.heroTitle}>
+          <h1 className={styles.heroTitle} data-appear>
             {hero.title.map((line) => (
               <span key={line.text} className={line.accent ? "accent" : undefined}>
                 {line.text}
@@ -38,12 +40,20 @@ export function SceneTrack() {
         </div>
       </div>
 
-      {/* 1 – 3.6 vh: value propositions, pinned inside */}
-      <div id="why-us-showup-trigger" className={styles.valueRegion}>
+      {/* Why us: the scene shrinks to centre, then cards and heading are scrubbed in and out. */}
+      <div id="why-us-section" className={styles.section} data-scene-state="why">
+        <div className={styles.delay} />
         <div className={styles.pin}>
           <ul className={styles.valueCards}>
             {values.items.map((item, i) => (
-              <li key={item.title} className={styles.valueCard} data-side={item.side} data-index={i}>
+              <li
+                key={item.title}
+                className={styles.valueCard}
+                data-side={item.side}
+                data-index={i}
+                data-reveal={item.side === "left" ? "from-right" : "from-left"}
+                data-reveal-group="why"
+              >
                 <span className={styles.connector} aria-hidden="true" />
                 <div className={styles.card}>
                   <h3 className={styles.cardTitle}>
@@ -55,19 +65,23 @@ export function SceneTrack() {
               </li>
             ))}
           </ul>
-          <div className={styles.valueHeading}>
+          <div className={styles.valueHeading} data-reveal="rise-exit-up" data-reveal-group="why">
             <p className="eyebrow">{values.eyebrow}</p>
             <h2 className={styles.valueTitle}>
               {values.title.text} <span className="accent">{values.title.accent}</span>
             </h2>
           </div>
         </div>
+        <div id="why-us-showup-trigger" className={styles.trigger} data-trigger="why-show" />
+        <div className={styles.delay} />
+        <div id="why-us-cleanup-trigger" className={styles.trigger} data-trigger="why-clean" />
       </div>
 
-      {/* 3.6 – 8 vh: services, pinned inside */}
-      <div id="features-content-showup-trigger" className={styles.servicesRegion}>
+      {/* Services: the camera dives into the disk; heading, then the grid. */}
+      <div id="features-section" className={styles.section} data-scene-state="features">
+        <div className={styles.delay} />
         <div className={styles.pin}>
-          <div className={styles.servicesHeading}>
+          <div className={styles.servicesHeading} data-reveal="rise-exit-up" data-reveal-group="features-title">
             <p className="eyebrow">{services.eyebrow}</p>
             <h2 className="section-title">
               {services.title.text}
@@ -75,9 +89,9 @@ export function SceneTrack() {
               <span className="accent">{services.title.accent}</span>
             </h2>
           </div>
-          <ul className={styles.servicesGrid}>
+          <ul className={styles.servicesGrid} data-reveal="rise" data-reveal-group="features-content">
             {services.items.map((item) => (
-              <li key={item.title} className={styles.serviceCard}>
+              <li key={item.title} className={styles.serviceCard} data-appear>
                 <span className={styles.serviceIcon}>
                   <Icon name={item.icon} size={24} />
                 </span>
@@ -89,29 +103,39 @@ export function SceneTrack() {
             ))}
           </ul>
         </div>
+        <div id="features-title-showup-trigger" className={styles.trigger} data-trigger="features-title-show" />
+        <div className={styles.delay} />
+        <div id="features-content-showup-trigger" className={styles.trigger} data-trigger="features-content-show" />
+        <div className={styles.delay} />
+        <div id="features-cleanup-trigger" className={styles.trigger} data-trigger="features-clean" />
       </div>
 
-      {/* 8 – 10.4 vh: journey timeline scrolls normally over the tilted disk */}
-      <div id="journey-content" className={styles.journeyRegion}>
-        <h2 className="sr-only">{journey.srTitle}</h2>
-        <ol className={styles.journey}>
-          {journey.steps.map((step, i) => (
-            <li key={step.title} className={styles.step}>
-              <span className={styles.stepNumber} aria-hidden="true">
-                {i + 1}
-              </span>
-              <span className={styles.stepLine} aria-hidden="true" />
-              <div className={styles.card}>
-                <h3 className={styles.cardTitle}>
-                  <span className="sr-only">{i + 1}. </span>
-                  {step.title}
-                </h3>
-                <p className={styles.cardBody}>{step.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+      {/* Journey: the disk tilts away; each step's card lights up as it reaches mid-screen. */}
+      <div id="journey-section" className={styles.journeySection} data-scene-state="journey">
+        <div className={styles.journeyDelay} />
+        <div id="journey-content" className={styles.journeyContent}>
+          <h2 className="sr-only">{journey.srTitle}</h2>
+          <ol className={styles.journey}>
+            {journey.steps.map((step, i) => (
+              <li key={step.title} className={styles.step} data-journey-step>
+                <span className={styles.stepNumber} aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span className={styles.stepLine} aria-hidden="true" />
+                <div className={`${styles.card} ${styles.stepCard}`}>
+                  <h3 className={styles.cardTitle}>
+                    <span className="sr-only">{i + 1}. </span>
+                    {step.title}
+                  </h3>
+                  <p className={styles.cardBody}>{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
+
+      <SceneChoreography />
     </section>
   );
 }

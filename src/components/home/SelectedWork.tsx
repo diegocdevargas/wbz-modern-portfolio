@@ -8,7 +8,7 @@ export function SelectedWork() {
   return (
     <section className={styles.section} aria-labelledby="selected-work-title">
       <div className={styles.inner}>
-        <div className={styles.head}>
+        <div className={styles.head} data-fade="blur">
           <div>
             <p className="label">{selectedWork.eyebrow}</p>
             <h2 id="selected-work-title" className={styles.title}>
@@ -17,7 +17,7 @@ export function SelectedWork() {
           </div>
           <MonoButton href={selectedWork.cta.href}>{selectedWork.cta.label}</MonoButton>
         </div>
-        <ul className={styles.grid}>
+        <ul className={styles.grid} data-fade-stagger>
           {featuredProjects.map((project) => (
             <li key={project.slug}>
               <ProjectCard

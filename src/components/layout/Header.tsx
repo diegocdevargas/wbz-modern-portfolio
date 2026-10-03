@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { nav, contactNav, site } from "@/content/site";
+import { smoothScroll } from "./SmoothScroll";
 import styles from "./Header.module.css";
 
 const HIDE_AFTER = 80;
@@ -47,6 +48,7 @@ export function Header() {
     const root = document.documentElement;
     const prev = root.style.overflow;
     root.style.overflow = "hidden";
+    smoothScroll.stop();
     const drawer = drawerRef.current;
     const focusables = () =>
       Array.from(drawer?.querySelectorAll<HTMLElement>("a[href], button:not([disabled])") ?? []);
@@ -72,6 +74,7 @@ export function Header() {
     document.addEventListener("keydown", onKey);
     return () => {
       root.style.overflow = prev;
+      smoothScroll.start();
       document.removeEventListener("keydown", onKey);
     };
   }, [open, close]);
