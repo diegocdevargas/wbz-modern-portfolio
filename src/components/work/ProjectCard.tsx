@@ -13,7 +13,7 @@ type Props = {
 export function ProjectCard({ project, sizes, priority }: Props) {
   return (
     <article className={styles.card}>
-      <Link href={`/cases/${project.slug}`} className={styles.link}>
+      <Link href={`/cases/${project.slug}`} className={styles.link} data-cursor-target>
         <div className={styles.media}>
           <Image
             src={project.cover.src}

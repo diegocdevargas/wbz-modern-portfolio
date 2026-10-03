@@ -25,6 +25,7 @@ export function WorkGrid({ projects, intro }: { projects: Project[]; intro: stri
               key={c.id}
               type="button"
               className={styles.chip}
+              data-cursor-target
               aria-pressed={filter === c.id}
               onClick={() => setFilter(c.id)}
             >

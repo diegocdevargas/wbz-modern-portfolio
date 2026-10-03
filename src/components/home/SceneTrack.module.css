@@ -223,7 +223,7 @@
 
 .journeySection {
   position: relative;
-  padding-block: 48px;
+  padding-block: 48px 86px;
 }
 
 .journeyDelay {

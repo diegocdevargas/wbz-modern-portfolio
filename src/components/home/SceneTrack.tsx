@@ -55,7 +55,7 @@ export function SceneTrack() {
                 data-reveal-group="why"
               >
                 <span className={styles.connector} aria-hidden="true" />
-                <div className={styles.card}>
+                <div className={styles.card} data-cursor-target>
                   <h3 className={styles.cardTitle}>
                     <Icon name={item.icon} size={27} className={styles.cardIcon} />
                     {item.title}
@@ -91,7 +91,7 @@ export function SceneTrack() {
           </div>
           <ul className={styles.servicesGrid} data-reveal="rise" data-reveal-group="features-content">
             {services.items.map((item) => (
-              <li key={item.title} className={styles.serviceCard} data-appear>
+              <li key={item.title} className={styles.serviceCard} data-appear data-cursor-target>
                 <span className={styles.serviceIcon}>
                   <Icon name={item.icon} size={24} />
                 </span>
@@ -122,7 +122,7 @@ export function SceneTrack() {
                   {i + 1}
                 </span>
                 <span className={styles.stepLine} aria-hidden="true" />
-                <div className={`${styles.card} ${styles.stepCard}`}>
+                <div className={`${styles.card} ${styles.stepCard}`} data-cursor-target>
                   <h3 className={styles.cardTitle}>
                     <span className="sr-only">{i + 1}. </span>
                     {step.title}

@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { Reveal } from "@/components/ui/Reveal";
+import { Cursor } from "@/components/ui/Cursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <SmoothScroll />
         <Reveal />
+        <Cursor />
       </body>
     </html>
   );

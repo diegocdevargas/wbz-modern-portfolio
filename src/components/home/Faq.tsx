@@ -25,7 +25,7 @@ export function Faq() {
           const btnId = `${baseId}-q${i}`;
           const panelId = `${baseId}-a${i}`;
           return (
-            <li key={item.q} className={styles.item} data-open={isOpen || undefined}>
+            <li key={item.q} className={styles.item} data-open={isOpen || undefined} data-cursor-target>
               <h3>
                 <button
                   id={btnId}

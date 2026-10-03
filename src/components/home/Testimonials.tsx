@@ -15,7 +15,7 @@ export function Testimonials() {
       </div>
       <Marquee className={styles.marquee} label="Depoimentos" speed={45}>
         {testimonials.map((t) => (
-          <li key={t.name} className={styles.card}>
+          <li key={t.name} className={styles.card} data-cursor-target>
             <figure>
               <figcaption className={styles.person}>
                 {t.avatar && (

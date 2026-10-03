@@ -49,7 +49,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   return (
     <article className={styles.page}>
       <header className="container">
-        <Link href="/cases" className={styles.back}>
+        <Link href="/cases" className={styles.back} data-cursor-target>
           ← Todos os trabalhos
         </Link>
         <h1 className={styles.title}>{project.title}</h1>
@@ -132,7 +132,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
       )}
 
       <nav className={styles.next} aria-label="Próximo projeto">
-        <Link href={`/cases/${next.slug}`} className={`container ${styles.nextLink}`}>
+        <Link href={`/cases/${next.slug}`} className={`container ${styles.nextLink}`} data-cursor-target>
           <span className={styles.nextLabel}>(Next project)</span>
           <span className={styles.nextRow}>
             <span className={styles.nextTitle}>{next.title}</span>

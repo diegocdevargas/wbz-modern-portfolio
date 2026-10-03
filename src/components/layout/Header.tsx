@@ -84,7 +84,7 @@ export function Header() {
   return (
     <header className={styles.header} data-state={state}>
       <div className={styles.row}>
-        <Link href="/" className={styles.logo} aria-label={`${site.name}, página inicial`}>
+        <Link href="/" className={styles.logo} data-cursor-target aria-label={`${site.name}, página inicial`}>
           Webcraftz
         </Link>
 
@@ -95,6 +95,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   className={styles.navLink}
+                  data-cursor-target
                   aria-current={pathname === item.href ? "page" : undefined}
                 >
                   {item.label}
@@ -104,7 +105,7 @@ export function Header() {
           </ul>
         </nav>
 
-        <Link href={contactNav.href} className={styles.contact}>
+        <Link href={contactNav.href} className={styles.contact} data-cursor-target>
           <span>{contactNav.label}</span>
           <span className={styles.contactIcon} aria-hidden="true">
             <svg viewBox="0 0 4.906 9" width="5" height="9">
