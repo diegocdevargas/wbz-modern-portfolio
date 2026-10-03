@@ -1,10 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import { faq } from "@/content/home";
+import type { Dictionary } from "@/content/dictionaries";
 import styles from "./Faq.module.css";
 
-export function Faq() {
+export function Faq({ t: faq }: { t: Dictionary["home"]["faq"] }) {
   const [open, setOpen] = useState<number | null>(null);
   const baseId = useId();
 
@@ -25,7 +25,7 @@ export function Faq() {
           const btnId = `${baseId}-q${i}`;
           const panelId = `${baseId}-a${i}`;
           return (
-            <li key={item.q} className={styles.item} data-open={isOpen || undefined}>
+            <li key={item.q} className={styles.item} data-open={isOpen || undefined} data-cursor-target>
               <h3>
                 <button
                   id={btnId}

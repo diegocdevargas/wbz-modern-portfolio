@@ -7,7 +7,7 @@
 .inner {
   max-width: var(--container);
   margin-inline: auto;
-  padding: 96px clamp(var(--gutter), 4.17vw, 60px) 120px;
+  padding: 96px clamp(var(--gutter), 4.17vw, 60px) 64px;
 }
 
 .head {

@@ -13,7 +13,7 @@ const format = new Intl.DateTimeFormat("pt-BR", {
 });
 
 /** Live studio time in Brasília. Renders nothing for the time until mounted, to avoid a hydration mismatch. */
-export function BrasiliaClock() {
+export function BrasiliaClock({ place }: { place: string }) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function BrasiliaClock() {
   return (
     <p className={styles.clock}>
       <span className={styles.clockDot} aria-hidden="true" />
-      <span className={styles.clockPlace}>Brasil</span>
+      <span className={styles.clockPlace}>{place}</span>
       <time className={styles.clockTime} suppressHydrationWarning>
         {now ? format.format(now) : "--:--:--"}
       </time>

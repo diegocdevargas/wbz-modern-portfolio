@@ -228,3 +228,24 @@
     animation: none;
   }
 }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.drawerLang {
+  margin-top: auto;
+}
+
+.drawerLang a {
+  padding: 10px 12px 10px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 809px) {
+  .lang {
+    display: none;
+  }
+}

@@ -25,6 +25,7 @@ export function MonoButton({ href, children, variant = "ghost", external, classN
     return (
       <a
         className={cls}
+        data-cursor-target
         href={href}
         {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
@@ -33,7 +34,7 @@ export function MonoButton({ href, children, variant = "ghost", external, classN
     );
   }
   return (
-    <Link className={cls} href={href}>
+    <Link className={cls} href={href} data-cursor-target>
       {content}
     </Link>
   );

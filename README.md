@@ -32,3 +32,15 @@ npm run typecheck
 ```
 
 Fonts are self-hosted from `src/fonts/` (Anton, Inter, JetBrains Mono, Moon 2.0).
+
+## Languages
+
+The site is published in Portuguese (main language, at `/` and `/cases`), English (`/en`)
+and Spanish (`/es`). `src/middleware.ts` serves Portuguese without a prefix, and the header
+switcher (PT · EN · ES) links to the same page in another language.
+
+- Interface and Home copy: `src/content/dictionaries/pt.ts`, `en.ts`, `es.ts` (same shape;
+  TypeScript flags a missing key).
+- Case studies: Portuguese in `src/content/projects.ts`, translations in `projects.en.ts` and
+  `projects.es.ts`, keyed by slug.
+- Testimonials stay in their original Portuguese in every language.

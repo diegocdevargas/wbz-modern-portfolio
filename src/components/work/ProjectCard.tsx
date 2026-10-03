@@ -1,19 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/content/projects";
+import { localePath, type Locale } from "@/i18n/config";
 import styles from "./ProjectCard.module.css";
 
 type Props = {
   project: Project;
+  locale: Locale;
   /** Responsive `sizes` for the cover; the grid is 2 columns ≥ 810px. */
   sizes?: string;
   priority?: boolean;
 };
 
-export function ProjectCard({ project, sizes, priority }: Props) {
+export function ProjectCard({ project, locale, sizes, priority }: Props) {
   return (
     <article className={styles.card}>
-      <Link href={`/cases/${project.slug}`} className={styles.link}>
+      <Link href={localePath(locale, `/cases/${project.slug}`)} className={styles.link} data-cursor-target>
         <div className={styles.media}>
           <Image
             src={project.cover.src}

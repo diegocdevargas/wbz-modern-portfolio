@@ -27,6 +27,11 @@
   color: var(--ink);
 }
 
+/* Spanish capitals carry accents (Á, Ó) and "¿" that collide at 0.9. */
+:global(html[lang="es"]) .title {
+  line-height: 1.1;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

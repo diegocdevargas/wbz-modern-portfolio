@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { loader } from "@/content/home";
 import { sceneStore } from "@/components/scene/sceneStore";
 import styles from "./Loader.module.css";
 
@@ -15,7 +14,7 @@ let lifted = false;
  * and "Preparando a órbita". It lifts once fonts and the first scene frame are ready,
  * or after 2.5 s. The page is server-rendered underneath, so nothing waits on it.
  */
-export function Loader() {
+export function Loader({ caption }: { caption: string }) {
   const [state, setState] = useState<"shown" | "leaving" | "gone">(() => (lifted ? "gone" : "shown"));
 
   useEffect(() => {
@@ -58,7 +57,7 @@ export function Loader() {
       <span className={styles.orbit} aria-hidden="true">
         <span className={styles.dot} />
       </span>
-      <p className={styles.caption}>{loader.caption}</p>
+      <p className={styles.caption}>{caption}</p>
     </div>
   );
 }

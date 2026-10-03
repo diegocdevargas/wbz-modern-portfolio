@@ -1,21 +1,21 @@
 import Image from "next/image";
-import { testimonials, testimonialsRating } from "@/content/testimonials";
-import { testimonialsSection } from "@/content/home";
+import { testimonials } from "@/content/testimonials";
+import type { Dictionary } from "@/content/dictionaries";
 import { Marquee } from "@/components/ui/Marquee";
 import styles from "./Testimonials.module.css";
 
-export function Testimonials() {
+export function Testimonials({ t }: { t: Dictionary["home"]["testimonials"] }) {
   return (
     <section className={styles.section} aria-labelledby="testimonials-title">
       <div className={styles.head} data-fade="blur">
-        <p className="eyebrow">{testimonialsRating}</p>
+        <p className="eyebrow">{t.rating}</p>
         <h2 id="testimonials-title" className={styles.title}>
-          {testimonialsSection.title.text} <span className="accent">{testimonialsSection.title.accent}</span>
+          {t.title.text} <span className="accent">{t.title.accent}</span>
         </h2>
       </div>
-      <Marquee className={styles.marquee} label="Depoimentos" speed={45}>
+      <Marquee className={styles.marquee} label={t.label} speed={45}>
         {testimonials.map((t) => (
-          <li key={t.name} className={styles.card}>
+          <li key={t.name} className={styles.card} data-cursor-target>
             <figure>
               <figcaption className={styles.person}>
                 {t.avatar && (
@@ -23,7 +23,7 @@ export function Testimonials() {
                 )}
                 <span className={styles.name}>{t.name}</span>
               </figcaption>
-              <blockquote className={styles.quote}>{t.quote}</blockquote>
+              <blockquote className={styles.quote} lang="pt-BR">{t.quote}</blockquote>
               <span className={styles.mark} aria-hidden="true">
                 ❜❜
               </span>

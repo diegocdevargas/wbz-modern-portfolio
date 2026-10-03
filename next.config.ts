@@ -7,7 +7,10 @@ const nextConfig: NextConfig = {
   },
   // The live site published this case under a misspelled slug; keep old links working.
   async redirects() {
-    return [{ source: "/cases/athie-wonhrath", destination: "/cases/athie-wohnrath", permanent: true }];
+    return [
+      { source: "/cases/athie-wonhrath", destination: "/cases/athie-wohnrath", permanent: true },
+      { source: "/:locale(en|es)/cases/athie-wonhrath", destination: "/:locale/cases/athie-wohnrath", permanent: true },
+    ];
   },
 };
 

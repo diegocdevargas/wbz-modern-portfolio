@@ -1,7 +1,7 @@
 .section {
   position: relative;
   z-index: 1;
-  padding: 120px var(--gutter) 160px;
+  padding: 68px var(--gutter) 253px;
   background: var(--bg);
 }
 

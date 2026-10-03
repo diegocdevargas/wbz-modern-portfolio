@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { footer } from "@/content/home";
+import type { Dictionary } from "@/content/dictionaries";
 import { site, sitemap, social } from "@/content/site";
+import { localePath, type Locale } from "@/i18n/config";
 import { BrasiliaClock } from "./BrasiliaClock";
 import styles from "./Footer.module.css";
 
 const WORDMARK = "WEBCRAFTZ".split("");
 
-export function Footer() {
+type Props = { locale: Locale; t: Dictionary["footer"] };
+
+export function Footer({ locale, t: footer }: Props) {
   return (
     <footer className={styles.footer}>
       <div className={styles.top}>
@@ -24,13 +27,13 @@ export function Footer() {
 
         <nav className={styles.col} aria-labelledby="footer-sitemap">
           <h2 id="footer-sitemap" className={styles.colTitle}>
-            Sitemap
+            {footer.sitemapTitle}
           </h2>
           <ul>
             {sitemap.map((item, i) => (
               <li key={item.href}>
-                <Link href={item.href} className={i === 0 ? styles.linkStrong : styles.link}>
-                  {item.label}
+                <Link href={localePath(locale, item.href)} className={i === 0 ? styles.linkStrong : styles.link}>
+                  {footer.sitemap[item.key]}
                 </Link>
               </li>
             ))}
@@ -39,7 +42,7 @@ export function Footer() {
 
         <nav className={styles.col} aria-labelledby="footer-social">
           <h2 id="footer-social" className={styles.colTitle}>
-            Social
+            {footer.socialTitle}
           </h2>
           <ul>
             {social.map((item) => (
@@ -53,13 +56,13 @@ export function Footer() {
         </nav>
 
         <div className={styles.col}>
-          <h2 className={styles.colTitle}>Studio</h2>
+          <h2 className={styles.colTitle}>{footer.studioTitle}</h2>
           <address className={styles.address}>
-            {site.location[0]}
+            {footer.location[0]}
             <br />
-            {site.location[1]}
+            {footer.location[1]}
           </address>
-          <BrasiliaClock />
+          <BrasiliaClock place={footer.clockPlace} />
         </div>
       </div>
 

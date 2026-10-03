@@ -1,7 +1,7 @@
 .section {
   position: relative;
   z-index: 1;
-  padding: 120px 0 40px;
+  padding: 30px 0 0;
   background: var(--bg);
 }
 
@@ -11,7 +11,7 @@
 }
 
 .title {
-  margin-top: 8px;
+  margin-top: 56px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(26px, 3.34vw, 48px);
@@ -23,7 +23,7 @@
 .marquee {
   --marquee-gap: 20px;
   max-width: 1100px;
-  margin: 64px auto 0;
+  margin: 40px auto 0;
 }
 
 .card {
@@ -81,6 +81,10 @@
 @media (max-width: 809px) {
   .section {
     padding-top: 80px;
+  }
+
+  .title {
+    margin-top: 8px;
   }
 
   .marquee {
