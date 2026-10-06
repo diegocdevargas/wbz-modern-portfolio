@@ -31,7 +31,7 @@ npm run build
 npm run typecheck
 ```
 
-Fonts are self-hosted from `src/fonts/` (Anton, Inter, JetBrains Mono, Moon 2.0).
+Fonts are self-hosted from `src/fonts/` (Anton, Inter, Moon 2.0 (logo)).
 
 ## Languages
 
