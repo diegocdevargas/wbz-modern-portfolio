@@ -279,11 +279,33 @@
   }
 }
 
-/* Journey cards light up as their step reaches mid-screen (toggled by the choreography). */
+/* Journey steps light up as they reach mid-screen (toggled by the choreography):
+   number first, then the dash draws out, then the card slides in. */
+.stepNumber,
+.stepLine,
 .stepCard {
   transition:
     opacity 0.5s var(--ease-out),
     transform 0.5s var(--ease-out);
+}
+
+.stepLine {
+  transform-origin: left center;
+  transition-delay: 0.1s;
+}
+
+.stepCard {
+  transition-delay: 0.2s;
+}
+
+[data-choreo] .step:not([data-visible]) .stepNumber {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+[data-choreo] .step:not([data-visible]) .stepLine {
+  opacity: 0;
+  transform: scaleX(0);
 }
 
 [data-choreo] .step:not([data-visible]) .stepCard {
@@ -387,6 +409,8 @@
     height: 30svh;
   }
 
+  .stepNumber,
+  .stepLine,
   .stepCard {
     transition: none;
   }
